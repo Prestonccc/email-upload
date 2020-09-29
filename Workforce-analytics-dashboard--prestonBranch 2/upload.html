@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html ng-app='myApp'>
+    <head>
+        <title>Upload email file</title>
+        <meta charset='UTF-8'>
+        <meta name="viewport" content="width=device-width, initial-scale=10">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;1,300&display=swap" rel="stylesheet">
+        <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+        <script type="text/javascript" src="js/angular.min.js"></script>
+        <script type="text/javascript" src="js/xlsx.full.min.js"></script>
+        <script type="text/javascript" src="js/customjs.js"></script>
+    </head>
+    
+    <body ng-controller='MyController'>
+        <div class="row">
+            <img src="image/logo.png" alt="logo" class="logo">
+            <ul class="main-nav">
+                <li><a href="#">Upload email</a></li>
+                <li><a href="#">Log out</a></li>
+            </ul>
+        </div>
+        
+        <div>
+           
+            <a class="template" href="example.xlsx" download>
+                <button type="button" class="download">
+                <span class="material-icons">
+                    get_app
+                </span>&nbsp;
+                Click to Download the Template
+                </button>
+            </a>
+            
+        </div>
+        
+        <div>
+            <form enctype="multipart/form-data">
+                <input type="file" id="file" accept=".xlsx, .csv">
+
+                <label class="choose" for="file">
+                    <span class="material-icons">
+                        description
+                    </span>&nbsp;
+                    Choose an Email File (.xlsx, .csv)
+                </label>
+                
+                <button type="submit" value="submit" ng-click="uploadExcel()">
+                    <span class="material-icons">
+                        publish
+                    </span>&nbsp;
+                    Upload File
+                </button>
+            </form>
+        </div>
+        
+        <div id="show">
+            <form action="" method="get" name="myform" onsubmit="showselected();return false;">
+        
+                <table class="myTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" id="select-all">
+                            </th>
+                            <th>Name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>  
+            <input class="submit_button" type="submit" value="Submit">
+            </form>
+        </div>
+       
+    <script>
+        document.getElementById('select-all').onclick = function() {
+              var checkboxes = document.getElementsByName('smallbox');
+              for (var checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+              }
+        }
+        function showselected(){
+            var listLength = document.myform.smallbox.length;
+            var listValue = "";
+            var selectemail= new Array();
+            for(i = 0 ;i < listLength; i++){
+                var listChecked = document.myform.smallbox[i].checked;
+                if(listChecked){
+                    listValue += document.myform.getElementsByClassName("myname")[i].innerHTML + ", " + document.myform.getElementsByClassName("myemail")[i].innerHTML + "; "; selectemail.push(document.myform.getElementsByClassName("myemail")[i].innerHTML);
+                }
+            }
+            var emailstr = "";
+            for(i = 0 ; i < selectemail.length ; i++){
+                emailstr += selectemail[i]+";";
+            }
+            emailstr = emailstr.substr(0, emailstr.length-1); 
+            var html="<a class=\"send\" href=\"mailto:" + emailstr + "?Subject=Survey Invitation&Body=Hi everyone\"><span class=\"material-icons\">email</span>&nbsp;Send Email</a>";
+            $("#show").append(html);
+        } 
+    </script>
+        
+    </body>
+</html>
+
+
